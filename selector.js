@@ -3,6 +3,7 @@
 // ========================================
 const photos = typeof imageFiles !== "undefined" ? imageFiles : [];
 const STORAGE_KEY = 'nicole_cumpleanos_photo_selections';
+
 let photoSelections = {};
 let currentPhotoIndex = null;
 let currentFilter = 'all';
@@ -71,7 +72,27 @@ function getStats() {
 function updateStats() {
     const stats = getStats();
 
-    document.getElementById('countAmpliacion').textContent =
+    document.getElementById('countFavoritas').textContent = stats.favoritas;
+    document.getElementById('countAlbum').textContent = stats.album;
+    document.getElementById('countRedes').textContent = stats.redes;
+    document.getElementById('countDescartada').textContent = stats.descartada;
+    document.getElementById('countSinClasificar').textContent = stats.sinClasificar;
+}
+
+// ========================================
+// GALLERY FUNCTIONS
+// ========================================
+function renderGallery() {
+    const grid = document.getElementById('photosGrid');
+    grid.innerHTML = '';
+
+    if (photos.length === 0) {
+        grid.innerHTML = '<div class="no-photos-message">No hay fotos disponibles aún.</div>';
+        return;
+    }
+
+    photos.forEach((photo, index) => {
+        const selection = photoSelections[index] || {};
         const hasAny = selection.favoritas || selection.album || selection.redes || selection.descartada;
 
         const card = document.createElement('div');
@@ -97,8 +118,8 @@ function updateStats() {
         if (hasAny) {
             badgesHTML = '<div class="photo-badges">';
             if (selection.favoritas) badgesHTML += '<span class="badge badge-favoritas">🖼️ Ampliación</span>';
-            if (selection.album) badgesHTML += '<span class="badge badge-album">📸 Impresión</span>';
-            if (selection.redes) badgesHTML += '<span class="badge badge-redes">💌 Invitación</span>';
+            if (selection.album) badgesHTML += '<span class="badge badge-album">📖 Álbum</span>';
+            if (selection.redes) badgesHTML += '<span class="badge badge-redes">📱 Redes</span>';
             if (selection.descartada) badgesHTML += '<span class="badge badge-descartada">❌ Descartada</span>';
             badgesHTML += '</div>';
         }
@@ -311,7 +332,7 @@ function saveModalSelection() {
 // ========================================
 function exportToJSON() {
     const exportData = {
-        evento: "Cumpleaños de Nicole - 3 Años",
+        evento: 'Cumpleaños de Nicole - 3 Años',
         fecha_exportacion: new Date().toISOString(),
         total_fotos: photos.length,
         estadisticas: getStats(),
@@ -347,19 +368,22 @@ function generateTextSummary() {
     const stats = getStats();
     let summary = '🎂 SELECCIÓN DE FOTOS - NICOLE 3 AÑOS\n';
     summary += '═══════════════════════════════════════════════════\n\n';
-    summary += `📊 RESUMEN:\n`;
+    summary += `📋 SEGÚN CONTRATO:\n`;
+    summary += `   ⭐ Favoritas requerida: ${LIMITES.favoritas} foto (28x35 cm)\n`;
+    summary += `   📖 Álbum requerida: ${LIMITES.album} fotos (5x7")\n\n`;
+    summary += `📊 RESUMEN ACTUAL:\n`;
     summary += `   Total de fotos: ${photos.length}\n`;
-    summary += `   ⭐ Favoritas: ${stats.favoritas}\n`;
-    summary += `   📖 Para álbum: ${stats.album}\n`;
-    summary += `   📱 Para redes: ${stats.redes}\n`;
+    summary += `   🖼️  Para ampliación: ${stats.favoritas}/${LIMITES.favoritas} ${stats.favoritas === LIMITES.favoritas ? '✓' : stats.favoritas > LIMITES.favoritas ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
+    summary += `   📸 Para impresión: ${stats.album}/${LIMITES.album} ${stats.album === LIMITES.album ? '✓' : stats.album > LIMITES.album ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
+    summary += `   💌 Para invitación: ${stats.redes}\n`;
     summary += `   ❌ Descartadas: ${stats.descartada}\n`;
     summary += `   ⭕ Sin clasificar: ${stats.sinClasificar}\n\n`;
 
     const categories = ['favoritas', 'album', 'redes', 'descartada'];
     const categoryNames = {
-        favoritas: '⭐ FAVORITAS',
-        album: '📖 ÁLBUM',
-        redes: '📱 REDES',
+        favoritas: '🖼️  AMPLIACIÓN',
+        album: '📸 IMPRESIÓN',
+        redes: '💌 INVITACIÓN',
         descartada: '❌ DESCARTADAS'
     };
 
@@ -460,5 +484,66 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isCurrentlySelected) {
                 const stats = getStats();
 
+                if (category === 'favoritas' && stats.favoritas >= LIMITES.favoritas) {
+                    const currentSelection = photoSelections[currentPhotoIndex] || {};
                     if (!currentSelection.favoritas) {
+                        showToast(`⚠️ Ya seleccionaste ${LIMITES.favoritas} foto(s) para ampliación. Deselecciona otra primero.`, 'error');
+                        return;
+                    }
+                }
+
+                if (category === 'album' && stats.album >= LIMITES.album) {
+                    const currentSelection = photoSelections[currentPhotoIndex] || {};
                     if (!currentSelection.album) {
+                        showToast(`⚠️ Ya seleccionaste ${LIMITES.album} fotos para impresión. Deselecciona otra primero.`, 'error');
+                        return;
+                    }
+                }
+            }
+
+            btn.classList.toggle('selected');
+        });
+    });
+
+    document.getElementById('photoModal').addEventListener('click', (e) => {
+        if (e.target.id === 'photoModal') {
+            closeModal();
+        }
+    });
+
+    document.getElementById('btnPrevPhoto').addEventListener('click', () => {
+        navigatePhoto('prev');
+    });
+
+    document.getElementById('btnNextPhoto').addEventListener('click', () => {
+        navigatePhoto('next');
+    });
+
+    document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('photoModal');
+        if (modal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeModal();
+            } else if (e.key === 'Enter') {
+                saveModalSelection();
+            } else if (e.key === 'ArrowLeft') {
+                navigatePhoto('prev');
+            } else if (e.key === 'ArrowRight') {
+                navigatePhoto('next');
+            }
+        }
+    });
+
+    console.log('Selector de fotos inicializado');
+    console.log(`Total de fotos: ${photos.length}`);
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        saveSelections();
+    }
+});
+
+window.addEventListener('beforeunload', (e) => {
+    saveSelections();
+});
