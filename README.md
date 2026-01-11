@@ -10,10 +10,14 @@ Galería de fotos interactiva para celebrar el tercer cumpleaños de Nicole.
 
 ```
 cumpleanos-nicole-3/
-├── index.html          # Página principal
-├── styles.css          # Estilos CSS
+├── index.html          # Página principal con galería
+├── selector.html       # Selector de fotos con categorías
+├── styles.css          # Estilos CSS de la galería
+├── selector.css        # Estilos CSS del selector
 ├── script.js           # JavaScript con funcionalidad de galería
-├── imagenes/           # Carpeta para archivos .webp
+├── selector.js         # JavaScript del selector
+├── image-list.js       # Lista automática de las 455 fotos
+├── imagenes/           # Carpeta con archivos .webp
 └── README.md           # Este archivo
 ```
 
@@ -34,11 +38,25 @@ const totalImages = 100; // CAMBIA ESTE NÚMERO AL TOTAL DE FOTOS QUE TENGAS
 
 ## ✨ Características
 
+### Galería Principal (index.html)
 - **Galería Responsive**: Se adapta a cualquier tamaño de pantalla
 - **Lightbox**: Visualiza las fotos en grande al hacer clic
 - **Navegación**: Usa las flechas o el teclado para navegar entre fotos
 - **Animaciones**: Efectos suaves al cargar y al hacer scroll
 - **Diseño Colorido**: Tema alegre perfecto para un cumpleaños infantil
+
+### Selector de Fotos (selector.html)
+- **Clasificación por Categorías**:
+  - ⭐ Favoritas
+  - 📖 Para Álbum
+  - 📱 Redes Sociales
+  - ❌ Descartadas
+- **Filtros Inteligentes**: Visualiza fotos por categoría
+- **Guardado Automático**: Las selecciones se guardan en LocalStorage
+- **Exportación**: Descarga reporte JSON con las selecciones
+- **Resumen Compartible**: Copia resumen de texto al portapapeles
+- **Navegación con Teclado**: Flechas ←/→, Enter para guardar, ESC para cerrar
+- **Contadores en Tiempo Real**: Ve cuántas fotos hay en cada categoría
 
 ## 🎨 Personalización
 
@@ -60,10 +78,19 @@ Edita los textos en `index.html`:
 
 ## 🚀 Cómo Usar
 
+### Galería Principal
 1. Abre `index.html` en tu navegador web
 2. Haz clic en cualquier foto para verla en grande
 3. Usa las flechas o las teclas ← → para navegar
 4. Presiona ESC o el botón X para cerrar la vista ampliada
+
+### Selector de Fotos
+1. Abre `selector.html` en tu navegador web
+2. Haz clic en cualquier foto para clasificarla
+3. Selecciona una o varias categorías (Favoritas, Álbum, Redes, Descartada)
+4. Haz clic en "Guardar" o presiona Enter
+5. Usa los botones de filtro para ver fotos por categoría
+6. Descarga el reporte JSON o copia el resumen cuando termines
 
 ## 📱 Compatibilidad
 
