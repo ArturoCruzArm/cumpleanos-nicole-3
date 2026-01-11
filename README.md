@@ -2,6 +2,10 @@
 
 Galería de fotos interactiva para celebrar el tercer cumpleaños de Nicole.
 
+🌐 **Ver galería online**: https://arturocruzarm.github.io/cumpleanos-nicole-3/
+
+📊 **455 fotos** en formato webp optimizado
+
 ## 📁 Estructura del Proyecto
 
 ```
@@ -66,6 +70,16 @@ Edita los textos en `index.html`:
 - ✅ Chrome, Firefox, Safari, Edge
 - ✅ Móviles y tablets
 - ✅ Responsive design
+
+## 🌐 Publicar Online con GitHub Pages
+
+Para ver la galería online:
+
+1. Ve a la configuración del repositorio en GitHub
+2. En la sección "Pages", selecciona la rama `master` como fuente
+3. Guarda los cambios
+4. En unos minutos, la galería estará disponible en:
+   `https://tu-usuario.github.io/cumpleanos-nicole-3/`
 
 ## 🎉 Disfruta la Celebración
 
