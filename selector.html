@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Fotos - Nicole 3 Años</title>
+    <link rel="stylesheet" href="selector.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="main-title">🎂 Selector de Fotos 🎂</h1>
+            <h2 class="subtitle">Nicole - 3 Años</h2>
+            <p class="instructions">Clasifica las fotos de la celebración</p>
+        </div>
+    </header>
+
+    <!-- Control Panel -->
+    <section class="control-panel">
+        <div class="container">
+            <div class="stats-row">
+                <div class="stat-card favoritas">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <h3>Favoritas</h3>
+                        <p class="stat-count" id="countFavoritas">0</p>
+                    </div>
+                </div>
+                <div class="stat-card album">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-info">
+                        <h3>Para Álbum</h3>
+                        <p class="stat-count" id="countAlbum">0</p>
+                    </div>
+                </div>
+                <div class="stat-card redes">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-info">
+                        <h3>Redes Sociales</h3>
+                        <p class="stat-count" id="countRedes">0</p>
+                    </div>
+                </div>
+                <div class="stat-card descartada">
+                    <div class="stat-icon">❌</div>
+                    <div class="stat-info">
+                        <h3>Descartadas</h3>
+                        <p class="stat-count" id="countDescartada">0</p>
+                    </div>
+                </div>
+                <div class="stat-card sin-clasificar">
+                    <div class="stat-icon">⭕</div>
+                    <div class="stat-info">
+                        <h3>Sin Clasificar</h3>
+                        <p class="stat-count" id="countSinClasificar">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-filter" id="btnFilterAll">Todas (0)</button>
+                <button class="btn btn-filter filter-favoritas" id="btnFilterFavoritas">Favoritas (0)</button>
+                <button class="btn btn-filter filter-album" id="btnFilterAlbum">Álbum (0)</button>
+                <button class="btn btn-filter filter-redes" id="btnFilterRedes">Redes (0)</button>
+                <button class="btn btn-filter filter-descartada" id="btnFilterDescartada">Descartadas (0)</button>
+                <button class="btn btn-filter filter-sin-clasificar" id="btnFilterSinClasificar">Sin Clasificar (0)</button>
+            </div>
+
+            <div class="action-buttons secondary">
+                <button class="btn btn-export" id="btnExport">📥 Descargar Reporte</button>
+                <button class="btn btn-share" id="btnShare">📤 Copiar Resumen</button>
+                <button class="btn btn-clear" id="btnClear">🗑️ Limpiar Todo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="photos-grid" id="photosGrid"></div>
+        </div>
+    </section>
+
+    <!-- Modal for Photo Selection -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-body">
+                <button class="modal-nav-btn modal-prev" id="btnPrevPhoto" title="Foto anterior (←)">
+                    <span>‹</span>
+                </button>
+                <button class="modal-nav-btn modal-next" id="btnNextPhoto" title="Foto siguiente (→)">
+                    <span>›</span>
+                </button>
+                <div class="modal-image-container">
+                    <img id="modalImage" src="" alt="Foto seleccionada">
+                    <div class="modal-photo-number" id="modalPhotoNumber"></div>
+                </div>
+                <div class="modal-options">
+                    <h3>¿Dónde quieres esta foto?</h3>
+                    <p class="modal-subtitle">Puedes seleccionar una o varias opciones</p>
+
+                    <div class="option-buttons">
+                        <button class="option-btn favoritas" data-category="favoritas">
+                            <span class="option-icon">⭐</span>
+                            <span class="option-text">Favoritas</span>
+                            <span class="option-check">✓</span>
+                        </button>
+                        <button class="option-btn album" data-category="album">
+                            <span class="option-icon">📖</span>
+                            <span class="option-text">Para Álbum</span>
+                            <span class="option-check">✓</span>
+                        </button>
+                        <button class="option-btn redes" data-category="redes">
+                            <span class="option-icon">📱</span>
+                            <span class="option-text">Redes Sociales</span>
+                            <span class="option-check">✓</span>
+                        </button>
+                        <button class="option-btn descartada" data-category="descartada">
+                            <span class="option-icon">❌</span>
+                            <span class="option-text">Descartar</span>
+                            <span class="option-check">✓</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn btn-save" id="btnSaveSelection">Guardar</button>
+                        <button class="btn btn-cancel" id="btnCancelSelection">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="image-list.js"></script>
+    <script src="selector.js"></script>
+</body>
+</html>
