@@ -198,9 +198,9 @@ function updateFilterButtons() {
     const stats = getStats();
 
     document.getElementById('btnFilterAll').textContent = `Todas (${photos.length})`;
-    document.getElementById('btnFilterAmpliacion').textContent = `Ampliación (${stats.favoritas})`;
-    document.getElementById('btnFilterImpresion').textContent = `Impresión (${stats.album})`;
-    document.getElementById('btnFilterInvitacion').textContent = `Invitación (${stats.redes})`;
+    document.getElementById('btnFilterFavoritas').textContent = `Favoritas (${stats.favoritas})`;
+    document.getElementById('btnFilterAlbum').textContent = `Álbum (${stats.album})`;
+    document.getElementById('btnFilterRedes').textContent = `Redes (${stats.redes})`;
     document.getElementById('btnFilterDescartada').textContent = `Descartadas (${stats.descartada})`;
     document.getElementById('btnFilterSinClasificar').textContent = `Sin Clasificar (${stats.sinClasificar})`;
 }
@@ -453,16 +453,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFilterButtons();
 
     document.getElementById('btnFilterAll').addEventListener('click', () => setFilter('all'));
-    document.getElementById('btnFilterAmpliacion').addEventListener('click', () => setFilter('favoritas'));
-    document.getElementById('btnFilterImpresion').addEventListener('click', () => setFilter('album'));
-    document.getElementById('btnFilterInvitacion').addEventListener('click', () => setFilter('redes'));
+    document.getElementById('btnFilterFavoritas').addEventListener('click', () => setFilter('favoritas'));
+    document.getElementById('btnFilterAlbum').addEventListener('click', () => setFilter('album'));
+    document.getElementById('btnFilterRedes').addEventListener('click', () => setFilter('redes'));
     document.getElementById('btnFilterDescartada').addEventListener('click', () => setFilter('descartada'));
     document.getElementById('btnFilterSinClasificar').addEventListener('click', () => setFilter('sin-clasificar'));
 
     document.getElementById('btnFilterAll').dataset.filter = 'all';
-    document.getElementById('btnFilterAmpliacion').dataset.filter = 'favoritas';
-    document.getElementById('btnFilterImpresion').dataset.filter = 'album';
-    document.getElementById('btnFilterInvitacion').dataset.filter = 'redes';
+    document.getElementById('btnFilterFavoritas').dataset.filter = 'favoritas';
+    document.getElementById('btnFilterAlbum').dataset.filter = 'album';
+    document.getElementById('btnFilterRedes').dataset.filter = 'redes';
     document.getElementById('btnFilterDescartada').dataset.filter = 'descartada';
     document.getElementById('btnFilterSinClasificar').dataset.filter = 'sin-clasificar';
 
