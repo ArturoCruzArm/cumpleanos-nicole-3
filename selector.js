@@ -3,6 +3,11 @@
 // ========================================
 const photos = typeof imageFiles !== "undefined" ? imageFiles : [];
 const STORAGE_KEY = 'nicole_cumpleanos_photo_selections';
+const LIMITES = {
+    ampliacion: 1,
+    impresion: 100,
+    redes: null
+};
 
 let photoSelections = {};
 let currentPhotoIndex = null;
@@ -16,7 +21,6 @@ function loadSelections() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             photoSelections = JSON.parse(saved);
-            console.log('Selecciones cargadas desde localStorage:', photoSelections);
         }
     } catch (error) {
         console.error('Error cargando selecciones:', error);
@@ -27,7 +31,6 @@ function loadSelections() {
 function saveSelections() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(photoSelections));
-        console.log('Selecciones guardadas en localStorage');
     } catch (error) {
         console.error('Error guardando selecciones:', error);
         showToast('Error al guardar. Verifica el espacio del navegador.', 'error');
@@ -50,16 +53,16 @@ function clearAllSelections() {
 // ========================================
 function getStats() {
     const stats = {
-        favoritas: 0,
-        album: 0,
+        ampliacion: 0,
+        impresion: 0,
         redes: 0,
         descartada: 0,
         sinClasificar: photos.length
     };
 
     Object.values(photoSelections).forEach(selection => {
-        if (selection.favoritas) stats.favoritas++;
-        if (selection.album) stats.album++;
+        if (selection.ampliacion) stats.ampliacion++;
+        if (selection.impresion) stats.impresion++;
         if (selection.redes) stats.redes++;
         if (selection.descartada) stats.descartada++;
     });
@@ -72,11 +75,42 @@ function getStats() {
 function updateStats() {
     const stats = getStats();
 
-    document.getElementById('countFavoritas').textContent = stats.favoritas;
-    document.getElementById('countAlbum').textContent = stats.album;
+    document.getElementById('countAmpliacion').textContent =
+        LIMITES.ampliacion ? `${stats.ampliacion}/${LIMITES.ampliacion}` : stats.ampliacion;
+    document.getElementById('countImpresion').textContent =
+        LIMITES.impresion ? `${stats.impresion}/${LIMITES.impresion}` : stats.impresion;
     document.getElementById('countRedes').textContent = stats.redes;
     document.getElementById('countDescartada').textContent = stats.descartada;
     document.getElementById('countSinClasificar').textContent = stats.sinClasificar;
+
+    const ampliacionCard = document.querySelector('.stat-card.ampliacion');
+    const impresionCard = document.querySelector('.stat-card.impresion');
+
+    if (ampliacionCard) {
+        if (stats.ampliacion > LIMITES.ampliacion) {
+            ampliacionCard.style.borderColor = '#f44336';
+            ampliacionCard.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+        } else if (stats.ampliacion === LIMITES.ampliacion) {
+            ampliacionCard.style.borderColor = '#4caf50';
+            ampliacionCard.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+        } else {
+            ampliacionCard.style.borderColor = '';
+            ampliacionCard.style.backgroundColor = '';
+        }
+    }
+
+    if (impresionCard) {
+        if (stats.impresion > LIMITES.impresion) {
+            impresionCard.style.borderColor = '#f44336';
+            impresionCard.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+        } else if (stats.impresion === LIMITES.impresion) {
+            impresionCard.style.borderColor = '#4caf50';
+            impresionCard.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+        } else {
+            impresionCard.style.borderColor = '';
+            impresionCard.style.backgroundColor = '';
+        }
+    }
 }
 
 // ========================================
@@ -93,7 +127,7 @@ function renderGallery() {
 
     photos.forEach((photo, index) => {
         const selection = photoSelections[index] || {};
-        const hasAny = selection.favoritas || selection.album || selection.redes || selection.descartada;
+        const hasAny = selection.ampliacion || selection.impresion || selection.redes || selection.descartada;
 
         const card = document.createElement('div');
         card.className = 'photo-card';
@@ -103,8 +137,8 @@ function renderGallery() {
             card.classList.add('has-descartada');
         } else {
             const categories = [];
-            if (selection.favoritas) categories.push('favoritas');
-            if (selection.album) categories.push('album');
+            if (selection.ampliacion) categories.push('ampliacion');
+            if (selection.impresion) categories.push('impresion');
             if (selection.redes) categories.push('redes');
 
             if (categories.length > 1) {
@@ -117,8 +151,8 @@ function renderGallery() {
         let badgesHTML = '';
         if (hasAny) {
             badgesHTML = '<div class="photo-badges">';
-            if (selection.favoritas) badgesHTML += '<span class="badge badge-favoritas">🖼️ Ampliación</span>';
-            if (selection.album) badgesHTML += '<span class="badge badge-album">📖 Álbum</span>';
+            if (selection.ampliacion) badgesHTML += '<span class="badge badge-ampliacion">🖼️ Ampliación</span>';
+            if (selection.impresion) badgesHTML += '<span class="badge badge-impresion">📸 Impresión</span>';
             if (selection.redes) badgesHTML += '<span class="badge badge-redes">📱 Redes</span>';
             if (selection.descartada) badgesHTML += '<span class="badge badge-descartada">❌ Descartada</span>';
             badgesHTML += '</div>';
@@ -159,11 +193,11 @@ function applyFilter() {
             case 'all':
                 show = true;
                 break;
-            case 'favoritas':
-                show = selection.favoritas === true;
+            case 'ampliacion':
+                show = selection.ampliacion === true;
                 break;
-            case 'album':
-                show = selection.album === true;
+            case 'impresion':
+                show = selection.impresion === true;
                 break;
             case 'redes':
                 show = selection.redes === true;
@@ -172,7 +206,7 @@ function applyFilter() {
                 show = selection.descartada === true;
                 break;
             case 'sin-clasificar':
-                show = !selection.favoritas && !selection.album && !selection.redes && !selection.descartada;
+                show = !selection.ampliacion && !selection.impresion && !selection.redes && !selection.descartada;
                 break;
         }
 
@@ -198,8 +232,8 @@ function updateFilterButtons() {
     const stats = getStats();
 
     document.getElementById('btnFilterAll').textContent = `Todas (${photos.length})`;
-    document.getElementById('btnFilterFavoritas').textContent = `Favoritas (${stats.favoritas})`;
-    document.getElementById('btnFilterAlbum').textContent = `Álbum (${stats.album})`;
+    document.getElementById('btnFilterAmpliacion').textContent = `Ampliación (${stats.ampliacion})`;
+    document.getElementById('btnFilterImpresion').textContent = `Impresión (${stats.impresion})`;
     document.getElementById('btnFilterRedes').textContent = `Redes (${stats.redes})`;
     document.getElementById('btnFilterDescartada').textContent = `Descartadas (${stats.descartada})`;
     document.getElementById('btnFilterSinClasificar').textContent = `Sin Clasificar (${stats.sinClasificar})`;
@@ -341,12 +375,12 @@ function exportToJSON() {
 
     photos.forEach((photo, index) => {
         const selection = photoSelections[index];
-        if (selection && (selection.favoritas || selection.album || selection.redes || selection.descartada)) {
+        if (selection && (selection.ampliacion || selection.impresion || selection.redes || selection.descartada)) {
             exportData.selecciones.push({
                 numero_foto: index + 1,
                 archivo: photo,
-                favoritas: selection.favoritas || false,
-                album: selection.album || false,
+                ampliacion: selection.ampliacion || false,
+                impresion: selection.impresion || false,
                 redes: selection.redes || false,
                 descartada: selection.descartada || false
             });
@@ -368,22 +402,24 @@ function generateTextSummary() {
     const stats = getStats();
     let summary = '🎂 SELECCIÓN DE FOTOS - NICOLE 3 AÑOS\n';
     summary += '═══════════════════════════════════════════════════\n\n';
-    summary += `📋 SEGÚN CONTRATO:\n`;
-    summary += `   ⭐ Favoritas requerida: ${LIMITES.favoritas} foto (28x35 cm)\n`;
-    summary += `   📖 Álbum requerida: ${LIMITES.album} fotos (5x7")\n\n`;
+    summary += `📋 LÍMITES:\n`;
+    summary += `   🖼️  Ampliación: ${LIMITES.ampliacion} foto\n`;
+    summary += `   📸 Impresión: ${LIMITES.impresion} fotos\n`;
+    summary += `   📱 Redes Sociales: Sin límite\n`;
+    summary += `   ❌ Descartadas: Sin límite\n\n`;
     summary += `📊 RESUMEN ACTUAL:\n`;
     summary += `   Total de fotos: ${photos.length}\n`;
-    summary += `   🖼️  Para ampliación: ${stats.favoritas}/${LIMITES.favoritas} ${stats.favoritas === LIMITES.favoritas ? '✓' : stats.favoritas > LIMITES.favoritas ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
-    summary += `   📸 Para impresión: ${stats.album}/${LIMITES.album} ${stats.album === LIMITES.album ? '✓' : stats.album > LIMITES.album ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
-    summary += `   💌 Para invitación: ${stats.redes}\n`;
+    summary += `   🖼️  Ampliación: ${stats.ampliacion}/${LIMITES.ampliacion} ${stats.ampliacion === LIMITES.ampliacion ? '✓' : stats.ampliacion > LIMITES.ampliacion ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
+    summary += `   📸 Impresión: ${stats.impresion}/${LIMITES.impresion} ${stats.impresion === LIMITES.impresion ? '✓' : stats.impresion > LIMITES.impresion ? '⚠️ EXCEDIDO' : '⚠️ FALTA'}\n`;
+    summary += `   📱 Redes Sociales: ${stats.redes}\n`;
     summary += `   ❌ Descartadas: ${stats.descartada}\n`;
     summary += `   ⭕ Sin clasificar: ${stats.sinClasificar}\n\n`;
 
-    const categories = ['favoritas', 'album', 'redes', 'descartada'];
+    const categories = ['ampliacion', 'impresion', 'redes', 'descartada'];
     const categoryNames = {
-        favoritas: '🖼️  AMPLIACIÓN',
-        album: '📸 IMPRESIÓN',
-        redes: '💌 INVITACIÓN',
+        ampliacion: '🖼️  AMPLIACIÓN',
+        impresion: '📸 IMPRESIÓN',
+        redes: '📱 REDES SOCIALES',
         descartada: '❌ DESCARTADAS'
     };
 
@@ -414,15 +450,7 @@ function copyToClipboard() {
     navigator.clipboard.writeText(summary).then(() => {
         showToast('Resumen copiado al portapapeles', 'success');
     }).catch(() => {
-        const textarea = document.createElement('textarea');
-        textarea.value = summary;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        showToast('Resumen copiado al portapapeles', 'success');
+        showToast('No se pudo copiar. Selecciona el texto manualmente.', 'error');
     });
 }
 
@@ -453,15 +481,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFilterButtons();
 
     document.getElementById('btnFilterAll').addEventListener('click', () => setFilter('all'));
-    document.getElementById('btnFilterFavoritas').addEventListener('click', () => setFilter('favoritas'));
-    document.getElementById('btnFilterAlbum').addEventListener('click', () => setFilter('album'));
+    document.getElementById('btnFilterAmpliacion').addEventListener('click', () => setFilter('ampliacion'));
+    document.getElementById('btnFilterImpresion').addEventListener('click', () => setFilter('impresion'));
     document.getElementById('btnFilterRedes').addEventListener('click', () => setFilter('redes'));
     document.getElementById('btnFilterDescartada').addEventListener('click', () => setFilter('descartada'));
     document.getElementById('btnFilterSinClasificar').addEventListener('click', () => setFilter('sin-clasificar'));
 
     document.getElementById('btnFilterAll').dataset.filter = 'all';
-    document.getElementById('btnFilterFavoritas').dataset.filter = 'favoritas';
-    document.getElementById('btnFilterAlbum').dataset.filter = 'album';
+    document.getElementById('btnFilterAmpliacion').dataset.filter = 'ampliacion';
+    document.getElementById('btnFilterImpresion').dataset.filter = 'impresion';
     document.getElementById('btnFilterRedes').dataset.filter = 'redes';
     document.getElementById('btnFilterDescartada').dataset.filter = 'descartada';
     document.getElementById('btnFilterSinClasificar').dataset.filter = 'sin-clasificar';
@@ -484,18 +512,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isCurrentlySelected) {
                 const stats = getStats();
 
-                if (category === 'favoritas' && stats.favoritas >= LIMITES.favoritas) {
+                if (category === 'ampliacion' && stats.ampliacion >= LIMITES.ampliacion) {
                     const currentSelection = photoSelections[currentPhotoIndex] || {};
-                    if (!currentSelection.favoritas) {
-                        showToast(`⚠️ Ya seleccionaste ${LIMITES.favoritas} foto(s) para ampliación. Deselecciona otra primero.`, 'error');
+                    if (!currentSelection.ampliacion) {
+                        showToast(`⚠️ Ya seleccionaste ${LIMITES.ampliacion} foto(s) para ampliación. Deselecciona otra primero.`, 'error');
                         return;
                     }
                 }
 
-                if (category === 'album' && stats.album >= LIMITES.album) {
+                if (category === 'impresion' && stats.impresion >= LIMITES.impresion) {
                     const currentSelection = photoSelections[currentPhotoIndex] || {};
-                    if (!currentSelection.album) {
-                        showToast(`⚠️ Ya seleccionaste ${LIMITES.album} fotos para impresión. Deselecciona otra primero.`, 'error');
+                    if (!currentSelection.impresion) {
+                        showToast(`⚠️ Ya seleccionaste ${LIMITES.impresion} fotos para impresión. Deselecciona otra primero.`, 'error');
                         return;
                     }
                 }
@@ -534,8 +562,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('Selector de fotos inicializado');
-    console.log(`Total de fotos: ${photos.length}`);
 });
 
 document.addEventListener('visibilitychange', () => {
