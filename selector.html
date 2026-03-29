@@ -14,7 +14,8 @@
         <div class="container">
             <h1 class="main-title">🎂 Selector de Fotos 🎂</h1>
             <h2 class="subtitle">Nicole - 3 Años</h2>
-            <p class="instructions">Clasifica las fotos de la celebración</p>
+            <p class="instructions">Selecciona:</p>
+            <p class="instructions"><strong>📸 100 fotos para impresión + 🖼️ 1 foto para ampliación</strong></p>
         </div>
     </header>
 
@@ -22,18 +23,18 @@
     <section class="control-panel">
         <div class="container">
             <div class="stats-row">
-                <div class="stat-card favoritas">
-                    <div class="stat-icon">⭐</div>
+                <div class="stat-card ampliacion">
+                    <div class="stat-icon">🖼️</div>
                     <div class="stat-info">
-                        <h3>Favoritas</h3>
-                        <p class="stat-count" id="countFavoritas">0</p>
+                        <h3>Ampliación</h3>
+                        <p class="stat-count" id="countAmpliacion">0</p>
                     </div>
                 </div>
-                <div class="stat-card album">
-                    <div class="stat-icon">📖</div>
+                <div class="stat-card impresion">
+                    <div class="stat-icon">📸</div>
                     <div class="stat-info">
-                        <h3>Para Álbum</h3>
-                        <p class="stat-count" id="countAlbum">0</p>
+                        <h3>Impresión</h3>
+                        <p class="stat-count" id="countImpresion">0</p>
                     </div>
                 </div>
                 <div class="stat-card redes">
@@ -61,8 +62,8 @@
 
             <div class="action-buttons">
                 <button class="btn btn-filter" id="btnFilterAll">Todas (0)</button>
-                <button class="btn btn-filter filter-favoritas" id="btnFilterFavoritas">Favoritas (0)</button>
-                <button class="btn btn-filter filter-album" id="btnFilterAlbum">Álbum (0)</button>
+                <button class="btn btn-filter filter-ampliacion" id="btnFilterAmpliacion">Ampliación (0)</button>
+                <button class="btn btn-filter filter-impresion" id="btnFilterImpresion">Impresión (0)</button>
                 <button class="btn btn-filter filter-redes" id="btnFilterRedes">Redes (0)</button>
                 <button class="btn btn-filter filter-descartada" id="btnFilterDescartada">Descartadas (0)</button>
                 <button class="btn btn-filter filter-sin-clasificar" id="btnFilterSinClasificar">Sin Clasificar (0)</button>
@@ -103,14 +104,14 @@
                     <p class="modal-subtitle">Puedes seleccionar una o varias opciones</p>
 
                     <div class="option-buttons">
-                        <button class="option-btn favoritas" data-category="favoritas">
-                            <span class="option-icon">⭐</span>
-                            <span class="option-text">Favoritas</span>
+                        <button class="option-btn ampliacion" data-category="ampliacion">
+                            <span class="option-icon">🖼️</span>
+                            <span class="option-text">Ampliación (1 foto)</span>
                             <span class="option-check">✓</span>
                         </button>
-                        <button class="option-btn album" data-category="album">
-                            <span class="option-icon">📖</span>
-                            <span class="option-text">Para Álbum</span>
+                        <button class="option-btn impresion" data-category="impresion">
+                            <span class="option-icon">📸</span>
+                            <span class="option-text">Impresión (100 fotos)</span>
                             <span class="option-check">✓</span>
                         </button>
                         <button class="option-btn redes" data-category="redes">
@@ -139,5 +140,6 @@
 
     <script src="image-list.js"></script>
     <script src="selector.js?v=3"></script>
+    <script src="visitas.js?v=1"></script>
 </body>
 </html>

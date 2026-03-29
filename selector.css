@@ -2,8 +2,8 @@
    VARIABLES
    ======================================== */
 :root {
-    --color-favoritas: #FFD700;
-    --color-album: #FF69B4;
+    --color-ampliacion: #8b4789;
+    --color-impresion: #2196f3;
     --color-redes: #00C9FF;
     --color-descartada: #f44336;
     --color-sin-clasificar: #9e9e9e;
@@ -103,14 +103,14 @@ body {
     box-shadow: var(--shadow-hover);
 }
 
-.stat-card.favoritas {
-    border-color: var(--color-favoritas);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), white);
+.stat-card.ampliacion {
+    border-color: var(--color-ampliacion);
+    background: linear-gradient(135deg, rgba(139, 71, 137, 0.05), white);
 }
 
-.stat-card.album {
-    border-color: var(--color-album);
-    background: linear-gradient(135deg, rgba(255, 105, 180, 0.05), white);
+.stat-card.impresion {
+    border-color: var(--color-impresion);
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.05), white);
 }
 
 .stat-card.redes {
@@ -189,15 +189,14 @@ body {
     border-color: var(--primary-color);
 }
 
-.filter-favoritas.active {
-    background: var(--color-favoritas);
-    border-color: var(--color-favoritas);
-    color: #333;
+.filter-ampliacion.active {
+    background: var(--color-ampliacion);
+    border-color: var(--color-ampliacion);
 }
 
-.filter-album.active {
-    background: var(--color-album);
-    border-color: var(--color-album);
+.filter-impresion.active {
+    background: var(--color-impresion);
+    border-color: var(--color-impresion);
 }
 
 .filter-redes.active {
@@ -292,12 +291,12 @@ body {
     display: none;
 }
 
-.photo-card.has-favoritas {
-    border-color: var(--color-favoritas);
+.photo-card.has-ampliacion {
+    border-color: var(--color-ampliacion);
 }
 
-.photo-card.has-album {
-    border-color: var(--color-album);
+.photo-card.has-impresion {
+    border-color: var(--color-impresion);
 }
 
 .photo-card.has-redes {
@@ -310,7 +309,7 @@ body {
 }
 
 .photo-card.has-multiple {
-    border-image: linear-gradient(135deg, var(--color-favoritas), var(--color-album), var(--color-redes)) 1;
+    border-image: linear-gradient(135deg, var(--color-ampliacion), var(--color-impresion), var(--color-redes)) 1;
 }
 
 .photo-image-container {
@@ -401,13 +400,12 @@ body {
     color: white;
 }
 
-.badge-favoritas {
-    background: var(--color-favoritas);
-    color: #333;
+.badge-ampliacion {
+    background: var(--color-ampliacion);
 }
 
-.badge-album {
-    background: var(--color-album);
+.badge-impresion {
+    background: var(--color-impresion);
 }
 
 .badge-redes {
@@ -605,14 +603,14 @@ body {
     opacity: 1;
 }
 
-.option-btn.favoritas.selected {
-    border-color: var(--color-favoritas);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), white);
+.option-btn.ampliacion.selected {
+    border-color: var(--color-ampliacion);
+    background: linear-gradient(135deg, rgba(139, 71, 137, 0.1), white);
 }
 
-.option-btn.album.selected {
-    border-color: var(--color-album);
-    background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), white);
+.option-btn.impresion.selected {
+    border-color: var(--color-impresion);
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), white);
 }
 
 .option-btn.redes.selected {
